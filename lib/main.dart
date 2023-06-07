@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mcq_project/models/qusetions.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,12 +30,22 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int questionNumber = 0;
-  List<String> question = [
-    "Google was originally called \"Backrub\"",
-    "Chocolate affects a dog's heart and nervous system; a few ounces are enough to kill a small dog",
-    "In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat",
+  List<Questions> questionBank = [
+    Questions(
+      questionText:
+          "In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat",
+      answer: true,
+    ),
+    Questions(
+      questionText:
+          "Chocolate affects a dog's heart and nervous system; a few ounces are enough to kill a small dog",
+      answer: false,
+    ),
+    Questions(
+      questionText: "Google was originally called \"Backrub\"",
+      answer: false,
+    ),
   ];
-  List<bool> answers = [true, false, false];
   List<Icon> scorKeeper = [];
 
   @override
@@ -50,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 flex: 8,
                 child: Center(
                   child: Text(
-                    question[questionNumber],
+                    questionBank[questionNumber].questionText,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -62,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    bool correctAnswer = answers[questionNumber];
+                    bool correctAnswer = questionBank[questionNumber].answer;
                     if (correctAnswer == true) {
                       scorKeeper.add(
                         const Icon(
@@ -92,8 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    bool correctAnswer = answers[questionNumber];
-                    print(correctAnswer);
+                    bool correctAnswer = questionBank[questionNumber].answer;
                     if (correctAnswer == true) {
                       scorKeeper.add(
                         const Icon(
