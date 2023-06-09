@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mcq_project/models/qusetions.dart';
+import 'package:mcq_project/quiz_brain.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,24 +29,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int questionNumber = 0;
-  List<Questions> questionBank = [
-    Questions(
-      questionText:
-          "In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat",
-      answer: true,
-    ),
-    Questions(
-      questionText:
-          "Chocolate affects a dog's heart and nervous system; a few ounces are enough to kill a small dog",
-      answer: false,
-    ),
-    Questions(
-      questionText: "Google was originally called \"Backrub\"",
-      answer: false,
-    ),
-  ];
   List<Icon> scorKeeper = [];
+  QuizBrain quizBrain = QuizBrain();
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 flex: 8,
                 child: Center(
                   child: Text(
-                    questionBank[questionNumber].questionText,
+                    quizBrain.questionsText(),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -73,26 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    bool correctAnswer = questionBank[questionNumber].answer;
-                    if (correctAnswer == true) {
-                      scorKeeper.add(
-                        const Icon(
-                          Icons.check,
-                          color: Colors.green,
-                        ),
-                      );
-                    } else {
-                      scorKeeper.add(
-                        const Icon(
-                          Icons.close,
-                          color: Colors.red,
-                        ),
-                      );
-                    }
-
-                    setState(() {
-                      questionNumber++;
-                    });
+                    checkAnswer(true);
                   },
                   child: const Text("true"),
                 ),
@@ -103,26 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
-                    bool correctAnswer = questionBank[questionNumber].answer;
-                    if (correctAnswer == true) {
-                      scorKeeper.add(
-                        const Icon(
-                          Icons.close,
-                          color: Colors.red,
-                        ),
-                      );
-                    } else {
-                      scorKeeper.add(
-                        const Icon(
-                          Icons.check,
-                          color: Colors.green,
-                        ),
-                      );
-                    }
-
-                    setState(() {
-                      questionNumber++;
-                    });
+                    checkAnswer(false);
                   },
                   style: const ButtonStyle(),
                   child: const Text("False"),
@@ -136,5 +82,28 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+
+  void checkAnswer(bool userChoice) {
+    bool correctAnswer = quizBrain.questionsAnswer();
+    if (correctAnswer == userChoice) {
+      scorKeeper.add(
+        const Icon(
+          Icons.check,
+          color: Colors.green,
+        ),
+      );
+    } else {
+      scorKeeper.add(
+        const Icon(
+          Icons.close,
+          color: Colors.red,
+        ),
+      );
+    }
+
+    setState(() {
+      quizBrain.nextQuesition();
+    });
   }
 }
