@@ -31,13 +31,20 @@ class QuizBrain {
   void nextQuesition() {
     if (questionNumber < _questionBank.length - 1) {
       questionNumber++;
-    } else if (questionNumber == _questionBank.length - 1) {
-      Future.delayed(
-        const Duration(seconds: 1),
-        () {
-          questionNumber++;
-        },
-      );
     }
+  }
+
+  bool isFinshed() {
+    if (questionNumber < _questionBank.length - 1) {
+      return true;
+    } else if (questionNumber < _questionBank.length - 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void reset() {
+    questionNumber = 0;
   }
 }

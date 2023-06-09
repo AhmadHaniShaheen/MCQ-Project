@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mcq_project/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 void main() {
   runApp(const MyApp());
@@ -74,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: const Text("False"),
                 ),
               ),
-              Row(
+              Wrap(
                 children: scorKeeper,
               )
             ],
@@ -84,26 +85,43 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void checkAnswer(bool userChoice) {
-    bool correctAnswer = quizBrain.questionsAnswer();
-    if (correctAnswer == userChoice) {
-      scorKeeper.add(
-        const Icon(
-          Icons.check,
-          color: Colors.green,
-        ),
-      );
+  checkAnswer(bool userChoice) {
+    if (quizBrain.isFinshed()) {
+      bool correctAnswer = quizBrain.questionsAnswer();
+      if (correctAnswer == userChoice) {
+        scorKeeper.add(
+          const Icon(
+            Icons.check,
+            color: Colors.green,
+          ),
+        );
+      } else {
+        scorKeeper.add(
+          const Icon(
+            Icons.close,
+            color: Colors.red,
+          ),
+        );
+      }
+
+      setState(() {
+        quizBrain.nextQuesition();
+      });
     } else {
-      scorKeeper.add(
-        const Icon(
-          Icons.close,
-          color: Colors.red,
-        ),
+      Future.delayed(
+        const Duration(seconds: 1),
+        () {
+          Alert(
+            context: context,
+            title: 'Qusitions Finshed',
+            desc: 'you are done',
+          ).show();
+          setState(() {
+            scorKeeper.clear();
+          });
+          quizBrain.reset();
+        },
       );
     }
-
-    setState(() {
-      quizBrain.nextQuesition();
-    });
   }
 }
