@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mcq_project/quiz_brain.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -86,8 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   checkAnswer(bool userChoice) {
-    if (quizBrain.isFinshed()) {
-      bool correctAnswer = quizBrain.questionsAnswer();
+    bool correctAnswer = quizBrain.questionsAnswer();
+    setState(() {
       if (correctAnswer == userChoice) {
         scorKeeper.add(
           const Icon(
@@ -103,25 +105,19 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         );
       }
-
+    });
+    if (quizBrain.isFinshed()) {
       setState(() {
         quizBrain.nextQuesition();
       });
     } else {
-      Future.delayed(
-        const Duration(seconds: 1),
-        () {
-          Alert(
-            context: context,
-            title: 'Qusitions Finshed',
-            desc: 'you are done',
-          ).show();
-          setState(() {
-            scorKeeper.clear();
-          });
+      Timer(const Duration(seconds: 1), () {
+        Alert(context: context, title: "Finished", desc: "you are done").show();
+        setState(() {
           quizBrain.reset();
-        },
-      );
+          scorKeeper.clear();
+        });
+      });
     }
   }
 }

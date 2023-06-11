@@ -37,8 +37,6 @@ class QuizBrain {
   bool isFinshed() {
     if (questionNumber < _questionBank.length - 1) {
       return true;
-    } else if (questionNumber < _questionBank.length - 1) {
-      return true;
     } else {
       return false;
     }
